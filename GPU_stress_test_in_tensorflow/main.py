@@ -16,17 +16,16 @@ end_count=50
 def parse_args():
         parser = argparse.ArgumentParser(description='get_vram')
         parser.add_argument('--vram', type=int, default='8',help='gpu_vram')
+        parser.add_argument('--num_gpus',type=int,default='1',help='gpu_num')
         args = parser.parse_args()
         return args
 
-def get_available_gpus():
-    local_device_protos = device_lib.list_local_devices()
-    return [x.name for x in local_device_protos if x.device_type == 'GPU']
 
-
-def main(GPU_num):
+def main():
     args=parse_args()
     vram=args.vram
+    GPU_num=args.num_gpus
+
     batch_size=vram
     model=Tyan_korea(GPU_num,batch_size)
 
@@ -68,5 +67,4 @@ def main(GPU_num):
 
 if __name__ == '__main__':
 
-    GPU_num=len(get_available_gpus())
-    main(GPU_num)
+    main()

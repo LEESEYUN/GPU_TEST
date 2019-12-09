@@ -59,6 +59,7 @@ def main():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--vram',type=int,default=8)
+    parser.add_argument('--num_gpus',type=int,default='1',help='gpu_num')
     parser.add_argument('--test-batch-size', type=int, default=8, metavar='N',
                         help='input batch size for testing (default: 1000)')
     parser.add_argument('--epochs', type=int, default=14, metavar='N',
@@ -79,7 +80,7 @@ def main():
     torch.manual_seed(args.seed)
 
 
-    batchsize=8*args.vram
+    batchsize=8*args.vram*args.num_gpus
 
 
     kwargs = {'num_workers': 8, 'pin_memory': True}
