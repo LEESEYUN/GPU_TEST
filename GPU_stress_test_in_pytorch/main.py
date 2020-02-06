@@ -81,7 +81,7 @@ def main():
 
 
     batchsize=8*args.vram*args.num_gpus
-
+    end_epoch=args.epochs*args.num_gpus
 
     kwargs = {'num_workers': 8, 'pin_memory': True}
 
@@ -107,7 +107,7 @@ def main():
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
-    for epoch in range(1, args.epochs + 1):
+    for epoch in range(1, end_epoch + 1):
         train(args, model, train_loader, optimizer, epoch)
         test(args, model, test_loader)
         scheduler.step()
