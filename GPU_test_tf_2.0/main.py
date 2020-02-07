@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, Conv2D
 from tensorflow.keras import Model
-
+import numpy as np
 #Limit GPU VRAM
 #tf.config.gpu.set_per_process_memory_fraction(0.75)
 #Allow Growth GPU
@@ -36,15 +36,21 @@ config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 
 mirrored_strategy = tf.distribute.MirroredStrategy()
-
+#mirrored_strategy=tf.distribute.MirroredStrategy(cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
 
 mnist = tf.keras.datasets.mnist
 
 
 batchsize=1000 *args.vram*args.num_gpus
-EPOCHS = 20
+#batchsize=1000
+EPOCHS = 100
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train=np.repeat(x_train,30,axis=0)
+y_train=np.repeat(y_train,30,axis=0)
+#x_test=np.repeat(x_test,10,axis=0)
+#y_test=np.repeat(y_test,10,axis=0)
+
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
 # 채널 차원을 추가합니다.
@@ -114,8 +120,11 @@ def test_step(images, labels):
 
 
 for epoch in range(EPOCHS):
+  #print("1")
   with mirrored_strategy.scope():
+      #print("2")
       for images, labels in train_ds:
+          #print("3")
           train_step(images, labels)
 
   for test_images, test_labels in test_ds:

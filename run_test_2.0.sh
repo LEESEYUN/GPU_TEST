@@ -1,5 +1,5 @@
-VRAM=12
-NUM_GPUS=2
+VRAM=11
+NUM_GPUS=8
 
 
 # This is for tensorflow

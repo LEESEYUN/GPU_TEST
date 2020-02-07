@@ -15,7 +15,7 @@ def parse_args():
         parser = argparse.ArgumentParser(description='get_vram')
         parser.add_argument('--vram', type=int, default='8',help='gpu_vram')
         parser.add_argument('--num_gpus',type=int,default='1',help='gpu_num')
-        parser.add_argument('--epoch',type=int,default='50',help='epoch')
+        parser.add_argument('--epoch',type=int,default='150',help='epoch')
         args = parser.parse_args()
         return args
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     total_epoch=args.epoch
     gpu_num=args.num_gpus
 
-    batch_size = 300*vram
+    batch_size = 600*vram*gpu_num
     learning_rate = 0.001
     
 
@@ -112,7 +112,9 @@ if __name__ == '__main__':
     sess = tf.Session(config=config)
     sess.run(init)
 
+    #print("1")
     mnist = input_data.read_data_sets('/tmp/tensorflow/mnist/input_data', one_hot=True)
+    #print("2")
     total_batch = int(mnist.train.num_examples/batch_size)
     print("total: %s, %s, %s" % (mnist.train.num_examples, total_batch, batch_size))
 
